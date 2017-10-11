@@ -32,7 +32,7 @@ public class DeveloperResourceTests {
     @Before
     public void setUp() {
         names.forEach(name -> {
-            Developer dev = template.postForObject("/dev", name, Developer.class);
+            Developer dev = template.postForObject("/dev", new Developer(null, name), Developer.class);
             developers.put(dev.getId(), dev);
         });
     }
@@ -45,15 +45,15 @@ public class DeveloperResourceTests {
 
     @Test
     public void addAndRemoveDeveloper() {
-        Developer dev = template.postForObject("/dev", "Pebbles", Developer.class);
+        Developer dev = template.postForObject("/dev", new Developer(null, "Pebbles"), Developer.class);
         assertEquals("Pebbles", dev.getName());
         template.delete("/dev/{id}", dev.getId());
     }
 
     @Test
     public void updateDeveloper() {
-        Developer dev = template.postForObject("/dev", "Pebbles", Developer.class);
-        template.put("/dev/{id}", "Bam-Bam", dev.getId());
+        Developer dev = template.postForObject("/dev", new Developer(null, "Pebbles"), Developer.class);
+        template.put("/dev/{id}", new Developer(null, "Bam-Bam"), dev.getId());
         Developer newDev = template.getForObject("/dev/{id}", Developer.class, dev.getId());
         assertEquals("Bam-Bam", newDev.getName());
     }
@@ -65,7 +65,7 @@ public class DeveloperResourceTests {
             ResponseEntity<Developer> devEntity = template.getForEntity("/dev/{id}", Developer.class, id);
             assertEquals(HttpStatus.OK, devEntity.getStatusCode());
             Developer developer = devEntity.getBody();
-            assertEquals(id.intValue(), developer.getId());
+            assertEquals(id.intValue(), developer.getId().intValue());
             assertEquals(dev.getName(), developer.getName());
         });
     }

@@ -17,47 +17,47 @@ public class DeveloperResource {
     private AtomicInteger counter = new AtomicInteger();
     private Map<Integer, Developer> developers = new HashMap<>();
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Developer getDeveloper(@PathVariable Integer id) {
         logger.info("Returning developer with id=" + id);
         return developers.get(id);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Collection<Developer> getAllDevelopers() {
         logger.info("Returning all developers");
         return developers.values();
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Developer addDeveloper(@RequestBody String name) {
+    public Developer addDeveloper(@RequestBody Developer developer) {
         int id = counter.incrementAndGet();
-        Developer dev = new Developer(id, name);
+        Developer dev = new Developer(id, developer.getName());
         developers.put(id, dev);
-        logger.info("Added developer with id=" + id + ", name=" + name);
+        logger.info("Added developer with id=" + id + ", name=" + developer.getName());
         return dev;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Developer update(@PathVariable Integer id, @RequestBody String name) {
-        Developer developer = new Developer(id, name);
-        developers.put(id, developer);
-        logger.info("Updated developer with id=" + id + ", name=" + name);
+    public Developer update(@PathVariable Integer id, @RequestBody Developer developer) {
+        Developer d = new Developer(id, developer.getName());
+        developers.put(id, d);
+        logger.info("Updated developer with id=" + id + ", name=" + developer.getName());
         return developer;
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDeveloper(@PathVariable Integer id) {
         logger.info("Removing developer with id=" + id);
         developers.remove(id);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAll() {
         logger.info("Removing all developers");

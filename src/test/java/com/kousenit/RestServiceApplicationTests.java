@@ -1,5 +1,6 @@
 package com.kousenit;
 
+import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,7 @@ public class RestServiceApplicationTests {
     private WebApplicationContext wac;
 
     private MockMvc mvc;
+    private Gson gson = new Gson();
 
     @Before
     public void setUp() {
@@ -36,20 +38,12 @@ public class RestServiceApplicationTests {
 
     @Test
     public void addDeveloper() throws Exception {
-        mvc.perform(post("/dev").content("Fred"))
+        Developer d = new Developer(1, "Fred");
+        System.out.println(gson.toJson(d));
+        mvc.perform(post("/dev").contentType(MediaType.APPLICATION_JSON)
+                .content(gson.toJson(d)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name").value("Fred"));
-    }
-
-    @Test
-    public void getDeveloper() throws Exception {
-        MvcResult result = mvc.perform(post("/dev").content("Fred"))
-                .andReturn();
-        System.out.println(result.getResponse().getContentAsString());
-        mvc.perform(get("/dev/{id}", 1))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Fred"))
-                .andExpect(jsonPath("$.id").value("1"));
     }
 }

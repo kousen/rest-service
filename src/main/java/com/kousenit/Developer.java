@@ -1,17 +1,17 @@
 package com.kousenit;
 
 public class Developer {
-    private int id;
+    private Integer id;
     private String name;
 
     public Developer() {}
 
-    public Developer(int id, String name) {
+    public Developer(Integer id, String name) {
         this.name = name;
         this.id = id;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
