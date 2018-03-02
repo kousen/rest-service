@@ -46,5 +46,5 @@ dependencies {
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.1.0'
 
     testImplementation('io.projectreactor:reactor-test')
-    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.0.0'
+    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
 }
